@@ -1,6 +1,6 @@
 {
   "latest_version": "1.1.0",
-  "download_url": "https://github.com/YOUR-USERNAME/tender-monitor/releases/latest",
+  "download_url": "https://github.com/projectsaibg/tender-monitor/releases/latest",
   "notes": "New: closing-soon alerts. Fixed: Odisha portal date parsing.",
   "message": "Please update when convenient."
 }
