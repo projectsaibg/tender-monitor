@@ -72,7 +72,7 @@ dashboard is served locally at **http://127.0.0.1:8000**.
 1. Install Python 3.12+ from https://www.python.org/downloads/ and tick
    **"Add Python to PATH"** during setup.
 2. Download / copy this project folder somewhere convenient
-   (for example `D:\Tender Hunt`).
+   (for example `D:\Tender Monitor`).
 3. Double-click **`install.bat`**. It will:
    create a virtual environment, install dependencies, install the Playwright
    Chromium browser, create the data folders and initialise the SQLite database.
@@ -228,7 +228,7 @@ UPDATED and NEW detection plus a downloaded document.
 ## Project structure
 
 ```
-Tender Hunt/
+Tender Monitor/
   app.py                  FastAPI dashboard + JSON API
   main.py                 Command-line entry point
   config.py               Technical settings / paths (no secrets)
