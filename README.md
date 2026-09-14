@@ -334,6 +334,36 @@ Non-NIC sites (plain HTML tender tables/cards) continue to use the generic
 engine, which now also reads tables whose header cells are styled `<td>` rather
 than `<th>`.
 
+## Running on macOS / Linux
+
+Tender Monitor is pure cross-platform Python - no code changes are needed. Use
+the shell scripts instead of the Windows `.bat` files:
+
+```bash
+./install.sh        # one-time setup (venv, dependencies, Chromium, database)
+./start.sh          # start the dashboard, then open http://127.0.0.1:8000
+./run_scan.sh       # run one scan of all enabled portals
+./stop.sh           # stop the dashboard
+./setup_cron.sh     # schedule a daily scan with cron
+```
+
+If the scripts are not executable yet, run `chmod +x *.sh` once.
+
+Manual commands (equivalent, if you prefer not to use the scripts):
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python -m playwright install chromium
+.venv/bin/python main.py --server
+```
+
+**Scheduling:** macOS / Linux have no Windows Task Scheduler. `setup_cron.sh`
+installs a `cron` job (or create a `launchd` agent on macOS). The in-app
+scheduler works while the dashboard is open, exactly as on Windows. Everything
+else - portals, scanning, Excel reports, the Archive, the About page and update
+checks - behaves identically.
+
 ## Credits, license & contact
 
 **Tender Monitor** is created and maintained by **Ganguly B (Shavarna)** and is
