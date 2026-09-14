@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block content %}
+{% set p = portal %}
+<div class="page-head">
+  <h1>{{ "Edit Portal" if p else "Add Portal" }}</h1>
+  <div class="actions"><a class="btn" href="/portals">Back to Portals</a></div>
+</div>
+
+<form id="portal-form" class="form" method="post"
+      action="{{ ('/portals/' ~ p.id) if p else '/portals' }}">
+  <div class="form-grid">
+    <label>Portal Name
+      <input type="text" name="name" required value="{{ p.name if p else '' }}">
+    </label>
+    <label>Website URL
+      <input type="url" name="url" id="portal-url" required placeholder="https://example.gov.in/tenders"
+             value="{{ p.url if p else '' }}">
+    </label>
+
+    <label>Monitoring
+      <span class="checkline"><input type="checkbox" name="enabled" {{ "checked" if (not p) or p.enabled else "" }}> Enabled</span>
+    </label>
+    <label>Schedule
+      <select name="schedule_type" id="schedule-type">
+        {% set st = p.schedule_type if p else "manual" %}
+        <option value="manual" {{ "selected" if st == "manual" else "" }}>Manual</option>
+        <option value="daily" {{ "selected" if st == "daily" else "" }}>Daily</option>
+        <option value="weekly" {{ "selected" if st == "weekly" else "" }}>Weekly</option>
+      </select>
+    </label>
+
+    <label>Run Time (HH:MM)
+      <input type="time" name="run_time" value="{{ p.run_time if p else '07:00' }}">
+    </label>
+    <label id="dow-label">Day of Week (weekly)
+      <select name="day_of_week">
+        {% set dow = p.day_of_week if p and p.day_of_week is not none else 0 %}
+        {% for i, d in [(0,"Monday"),(1,"Tuesday"),(2,"Wednesday"),(3,"Thursday"),(4,"Friday"),(5,"Saturday"),(6,"Sunday")] %}
+          <option value="{{ i }}" {{ "selected" if dow == i else "" }}>{{ d }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label>Keywords (comma-separated)
+      <input type="text" name="keywords" placeholder="water, pipeline, WTP, STP, JJM"
+             value="{{ (p.keywords | join(', ')) if p else '' }}">
+    </label>
+    <label>Negative Keywords (comma-separated)
+      <input type="text" name="negative_keywords" placeholder="vehicle, security, canteen"
+             value="{{ (p.negative_keywords | join(', ')) if p else '' }}">
+    </label>
+
+    <label>Keyword Mode
+      <select name="keyword_mode">
+        {% set km = p.keyword_mode if p else "any" %}
+        <option value="any" {{ "selected" if km == "any" else "" }}>Match ANY keyword</option>
+        <option value="all" {{ "selected" if km == "all" else "" }}>Match ALL keywords</option>
+      </select>
+    </label>
+    <label>Location Filter (optional)
+      <input type="text" name="location" value="{{ p.location if p else '' }}">
+    </label>
+
+    <label>Minimum Tender Value (optional)
+      <input type="text" name="min_value" value="{{ p.min_value if p and p.min_value is not none else '' }}">
+    </label>
+    <label>Maximum Tender Value (optional)
+      <input type="text" name="max_value" value="{{ p.max_value if p and p.max_value is not none else '' }}">
+    </label>
+
+    <label>Download Documents
+      <span class="checkline"><input type="checkbox" name="download_documents" {{ "checked" if (not p) or p.download_documents else "" }}> Yes</span>
+    </label>
+    <label>Maximum Pages
+      <input type="number" name="max_pages" min="1" max="50" value="{{ p.max_pages if p else 5 }}">
+    </label>
+
+    <label>Delay Between Requests (seconds)
+      <input type="number" step="0.5" min="0" name="request_delay" value="{{ p.request_delay if p else 2.0 }}">
+    </label>
+    <label>Browser Mode
+      <select name="browser_mode">
+        {% set bm = p.browser_mode if p else "headless" %}
+        <option value="headless" {{ "selected" if bm == "headless" else "" }}>Headless</option>
+        <option value="visible" {{ "selected" if bm == "visible" else "" }}>Visible</option>
+      </select>
+    </label>
+
+    <label>First Scan Handling
+      <span class="checkline"><input type="checkbox" name="treat_first_scan_as_new" {{ "checked" if p and p.treat_first_scan_as_new else "" }}> Treat first scan as NEW (default: baseline only)</span>
+    </label>
+    <label>Follow Detail Pages
+      <span class="checkline"><input type="checkbox" name="follow_detail" {{ "checked" if p and p.config and p.config.follow_detail else "" }}> Enrich from tender detail pages</span>
+    </label>
+
+    <label>Organisations to scan (NIC portals only)
+      <input type="number" name="nic_max_orgs" min="1" max="500"
+             value="{{ p.config.nic_max_orgs if p and p.config and p.config.nic_max_orgs else 60 }}">
+    </label>
+    <label>Store only matching tenders
+      <span class="checkline"><input type="checkbox" name="only_matching" {{ "checked" if p and p.config and p.config.only_matching else "" }}> Keep only tenders that match your keywords</span>
+    </label>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="btn" id="test-portal-btn">Test Portal</button>
+    <button type="submit" class="btn primary">Save Portal</button>
+  </div>
+</form>
+
+<div id="test-result" class="test-result" hidden></div>
+{% endblock %}
+{% block scripts %}<script>initPortalForm();</script>{% endblock %}

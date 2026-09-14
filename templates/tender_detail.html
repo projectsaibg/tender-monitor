@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+{% if not tender %}
+  <p class="muted">Tender not found.</p>
+{% else %}
+<div class="page-head">
+  <h1>{{ tender.tender_title or tender.tender_id or "Tender" }}</h1>
+  <div class="actions">
+    <span class="tag {{ tender.status }}">{{ tender.status }}</span>
+    <span class="tag rel-{{ tender.relevance_band|lower }}">{{ tender.relevance_band }} {{ tender.relevance_score }}</span>
+    <a class="btn" href="/tenders">Back</a>
+  </div>
+</div>
+
+<div class="grid-2">
+  <section class="panel">
+    <h2>Details</h2>
+    <table class="kv">
+      <tr><th>Portal</th><td>{{ tender.portal_name }}</td></tr>
+      <tr><th>Tender ID</th><td>{{ tender.tender_id }}</td></tr>
+      <tr><th>Reference</th><td>{{ tender.tender_reference }}</td></tr>
+      <tr><th>Organisation</th><td>{{ tender.organisation }}</td></tr>
+      <tr><th>Department</th><td>{{ tender.department }}</td></tr>
+      <tr><th>Category</th><td>{{ tender.tender_category }}</td></tr>
+      <tr><th>Location</th><td>{{ tender.location }}</td></tr>
+      <tr><th>Published</th><td>{{ tender.published_date }}</td></tr>
+      <tr><th>Submission Start</th><td>{{ tender.bid_submission_start }}</td></tr>
+      <tr><th>Closing</th><td>{{ tender.bid_submission_end }}</td></tr>
+      <tr><th>Opening</th><td>{{ tender.opening_date }}</td></tr>
+      <tr><th>Estimated Value</th><td>{{ tender.estimated_value_text }}</td></tr>
+      <tr><th>EMD</th><td>{{ tender.emd }}</td></tr>
+      <tr><th>Tender Fee</th><td>{{ tender.tender_fee }}</td></tr>
+      <tr><th>Work Period</th><td>{{ tender.work_period }}</td></tr>
+      <tr><th>Eligibility</th><td>{{ tender.eligibility }}</td></tr>
+      <tr><th>Source</th><td class="mono trunc"><a href="{{ tender.source_url }}" target="_blank" rel="noopener">{{ tender.source_url }}</a></td></tr>
+      {% if tender.tender_detail_url %}<tr><th>Detail Page</th><td class="mono trunc"><a href="{{ tender.tender_detail_url }}" target="_blank" rel="noopener">{{ tender.tender_detail_url }}</a></td></tr>{% endif %}
+      <tr><th>First Seen</th><td class="mono">{{ tender.first_seen_at }}</td></tr>
+      <tr><th>Last Seen</th><td class="mono">{{ tender.last_seen_at }}</td></tr>
+    </table>
+    {% if tender.extra_fields %}
+      <h3>Additional Fields</h3>
+      <table class="kv">
+        {% for k, v in tender.extra_fields.items() %}<tr><th>{{ k }}</th><td>{{ v }}</td></tr>{% endfor %}
+      </table>
+    {% endif %}
+  </section>
+
+  <section class="panel">
+    <h2>Documents ({{ documents|length }})</h2>
+    <ul class="doclist">
+      {% for d in documents %}
+        <li>
+          <strong>{{ d.document_name or "document" }}</strong>
+          <span class="tag {{ d.status }}">{{ d.status }}</span>
+          <div class="muted mono">{{ d.file_size }} bytes {% if d.sha256 %}| sha256 {{ d.sha256[:12] }}...{% endif %}</div>
+          <a href="{{ d.document_url }}" target="_blank" rel="noopener">source</a>
+          {% if d.local_path %} | <a href="/downloads/open?path={{ d.local_path | urlencode }}">local copy</a>{% endif %}
+        </li>
+      {% else %}
+        <li class="muted">No documents recorded.</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Change History ({{ versions|length }})</h2>
+    <table class="tbl">
+      <thead><tr><th>When</th><th>Field</th><th>Change</th><th>Old</th><th>New</th></tr></thead>
+      <tbody>
+      {% for v in versions %}
+        <tr><td class="mono">{{ v.changed_at }}</td><td>{{ v.field }}</td>
+            <td><span class="tag warn">{{ v.change_type }}</span></td>
+            <td>{{ v.old_value }}</td><td>{{ v.new_value }}</td></tr>
+      {% else %}
+        <tr><td colspan="5" class="muted">No changes recorded yet.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</div>
+{% endif %}
+{% endblock %}

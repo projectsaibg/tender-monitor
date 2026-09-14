@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ app_title }}{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16.png">
+  <link rel="apple-touch-icon" href="/static/img/favicon-180.png">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <a href="/"><img class="brand-logo" src="/static/img/logo-mark.png" alt="Tender Monitor logo">Tender Monitor</a>
+      <span class="ver">v{{ app_version }}</span>
+    </div>
+    <nav class="mainnav">
+      <a href="/">Dashboard</a>
+      <a href="/portals">Portals</a>
+      <a href="/tenders">Tenders</a>
+      <a href="/archive">Archive</a>
+      <a href="/scans">Scan History</a>
+      <a href="/settings">Settings</a>
+      <a href="/about">About</a>
+    </nav>
+    <div class="status">
+      <span id="scan-pill" class="pill {{ 'busy' if scan_running else 'idle' }}">
+        {{ "Scanning..." if scan_running else "Idle" }}
+      </span>
+    </div>
+  </header>
+  <main class="container">
+    {% if update and update.available %}
+    <div class="update-banner">
+      <strong>Update available:</strong> version {{ update.latest }} is out
+      (you have {{ update.current }}).
+      {% if update.url %}<a class="btn tiny" href="{{ update.url }}" target="_blank" rel="noopener">Get update</a>{% endif %}
+      <a class="btn tiny" href="/about">Details</a>
+    </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer">
+    Tender Monitor v{{ app_version }} - runs entirely on your computer.
+    Next scheduled scan: <strong>{{ next_run or "none" }}</strong><br>
+    Made by <strong>{{ author }}</strong> &middot;
+    <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> &middot;
+    <a href="{{ contact_whatsapp_link }}" target="_blank" rel="noopener">WhatsApp {{ contact_whatsapp }}</a>
+    &middot; Open source ({{ app_license }} License) &middot;
+    <a href="/about">About</a>
+  </footer>
+  <script src="/static/js/app.js"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

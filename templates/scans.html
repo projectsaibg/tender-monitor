@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-head"><h1>Scan History</h1>
+  <div class="actions">
+    <form method="post" action="/scan/all"><button class="btn primary" {{ "disabled" if scan_running else "" }}>Run All Now</button></form>
+  </div>
+</div>
+
+{% if selected_scan %}
+<section class="panel">
+  <h2>Scan #{{ selected_scan.id }} - {{ selected_scan.portal_name }}</h2>
+  <table class="kv">
+    <tr><th>Started</th><td class="mono">{{ selected_scan.started_at }}</td></tr>
+    <tr><th>Finished</th><td class="mono">{{ selected_scan.finished_at }}</td></tr>
+    <tr><th>Duration</th><td>{{ selected_scan.duration_seconds }} s</td></tr>
+    <tr><th>Pages</th><td>{{ selected_scan.pages_processed }}</td></tr>
+    <tr><th>Found / New / Updated / Existing</th><td>{{ selected_scan.tenders_found }} / {{ selected_scan.new_count }} / {{ selected_scan.updated_count }} / {{ selected_scan.existing_count }}</td></tr>
+    <tr><th>Documents</th><td>{{ selected_scan.documents_downloaded }}</td></tr>
+    <tr><th>Status</th><td><span class="tag {{ selected_scan.status }}">{{ selected_scan.status }}</span></td></tr>
+    <tr><th>Notes</th><td>{{ selected_scan.notes }}</td></tr>
+  </table>
+  {% if scan_errors %}
+    <h3>Errors</h3>
+    <ul class="errlist">{% for e in scan_errors %}<li><span class="tag err">{{ e.error_type }}</span> {{ e.message }} <span class="muted">{{ e.detail }}</span></li>{% endfor %}</ul>
+  {% endif %}
+  <a class="btn" href="/scans">Close</a>
+</section>
+{% endif %}
+
+<table class="tbl">
+  <thead>
+    <tr><th>#</th><th>Portal</th><th>Started</th><th>Finished</th><th>Dur(s)</th><th>Pages</th>
+        <th>Found</th><th>New</th><th>Upd</th><th>Docs</th><th>Err</th><th>Status</th></tr>
+  </thead>
+  <tbody>
+  {% for s in scans %}
+    <tr>
+      <td><a href="/scans?scan_id={{ s.id }}">{{ s.id }}</a></td>
+      <td>{{ s.portal_name }}</td>
+      <td class="mono">{{ s.started_at }}</td>
+      <td class="mono">{{ s.finished_at }}</td>
+      <td>{{ s.duration_seconds }}</td><td>{{ s.pages_processed }}</td>
+      <td>{{ s.tenders_found }}</td><td>{{ s.new_count }}</td><td>{{ s.updated_count }}</td>
+      <td>{{ s.documents_downloaded }}</td><td>{{ s.error_count }}</td>
+      <td><span class="tag {{ s.status }}">{{ s.status }}</span></td>
+    </tr>
+  {% else %}
+    <tr><td colspan="12" class="muted">No scans yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

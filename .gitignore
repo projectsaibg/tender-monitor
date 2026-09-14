@@ -1,0 +1,24 @@
+# Virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Runtime data (DB, downloads, reports, logs)
+data/
+!data/.gitkeep
+
+# Local env overrides
+.env
+
+# Scaffolding helpers
+_scaffold_write.py
+_patch.py
+_validate_live.py
+_*.py
+_*.txt
+docs/manual/_*
+
+# Unrelated tool artifacts
+.claude-flow/

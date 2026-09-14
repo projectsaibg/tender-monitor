@@ -1,0 +1,16 @@
+[project]
+name = "tender-monitor"
+version = "1.0.0"
+description = "Local Windows tender / e-procurement monitoring application"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Ganguly B (Shavarna)", email = "enlaceet@gmail.com" }]
+maintainers = [{ name = "Ganguly B (Shavarna)", email = "enlaceet@gmail.com" }]
+keywords = ["tender", "eprocurement", "gepnic", "monitoring", "government"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]

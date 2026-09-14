@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tender Monitor - User Handbook</title>
+<style>
+  @page { size: A4; margin: 16mm 14mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #1f2933;
+         font-size: 12px; line-height: 1.55; margin: 0; }
+  h1, h2, h3 { color: #1f4e78; }
+  h2 { font-size: 19px; border-bottom: 3px solid #1f4e78; padding-bottom: 5px; margin-top: 6px;
+       page-break-before: always; page-break-after: avoid; }
+  h3 { font-size: 15px; margin: 16px 0 4px; page-break-after: avoid; }
+  p { margin: 6px 0; }
+  code { background: #eef2f7; padding: 1px 5px; border-radius: 4px; font-family: Consolas, monospace; font-size: 11px; }
+  .cmd { background: #0f2233; color: #e6edf3; font-family: Consolas, monospace; font-size: 11.5px;
+         padding: 9px 12px; border-radius: 6px; margin: 8px 0; white-space: pre-wrap; }
+  .screenshot { width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; margin: 8px 0 4px;
+                box-shadow: 0 1px 4px rgba(0,0,0,.12); page-break-inside: avoid; }
+  .cap { color: #64748b; font-size: 10.5px; margin: 0 0 12px; text-align: center; font-style: italic; }
+  .tip, .warn, .note { border-radius: 6px; padding: 9px 12px; margin: 10px 0; page-break-inside: avoid; }
+  .tip { background: #e7f5ee; border-left: 4px solid #148f5b; }
+  .warn { background: #fdecea; border-left: 4px solid #c53030; }
+  .note { background: #eef4fb; border-left: 4px solid #2b6cb0; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; page-break-inside: avoid; }
+  th, td { border: 1px solid #d7dee8; padding: 5px 8px; text-align: left; vertical-align: top; }
+  th { background: #eef2f7; }
+  ol.steps > li { margin: 6px 0; }
+  .lead { font-size: 13px; }
+  .pill { display: inline-block; background: #1f4e78; color: #fff; border-radius: 10px; padding: 1px 8px; font-size: 10px; }
+  .cover { text-align: center; padding-top: 26mm; }
+  .cover-logo { width: 300px; max-width: 62%; display: block; margin: 0 auto 10px; }
+  .cover h1 { font-size: 40px; margin: 0; }
+  .cover .sub { font-size: 17px; color: #334155; margin-top: 8px; }
+  .cover .meta { margin-top: 40px; color: #64748b; font-size: 12px; }
+  .toc a { color: #1f4e78; text-decoration: none; }
+  .toc li { margin: 3px 0; }
+  ul { margin: 6px 0; padding-left: 20px; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <img src="img/logo.png" alt="Tender Monitor" class="cover-logo">
+  <div class="pill">Runs entirely on your Windows computer</div>
+  <h1 style="margin-top:14px;">Tender Monitor</h1>
+  <div class="sub">User Handbook &amp; Installation Guide</div>
+  <div class="sub" style="font-size:13px;color:#64748b;">for first-time users</div>
+  <div class="meta">
+    Version 1.0 &middot; Windows 10 / 11<br>
+    A step-by-step guide to install and use Tender Monitor to track<br>
+    government e-procurement tenders automatically.
+    <br><br>
+    <strong>Made by Ganguly B (Shavarna)</strong><br>
+    enlaceet@gmail.com &middot; WhatsApp +91-9073288770<br>
+    Free &amp; open source (MIT License)
+  </div>
+</div>
+
+<h2 style="page-break-before:avoid;">Contents</h2>
+<ol class="toc">
+  <li>What is Tender Monitor?</li>
+  <li>Before you begin (what you need)</li>
+  <li>Step 1 - Install the application</li>
+  <li>Step 2 - Start the application</li>
+  <li>Step 3 - Understand the Dashboard</li>
+  <li>Step 4 - Add your first tender portal</li>
+  <li>Step 5 - Test the portal</li>
+  <li>Step 6 - Run your first scan</li>
+  <li>Step 7 - View and filter tenders</li>
+  <li>Step 8 - Open a tender's details</li>
+  <li>Step 9 - Keep the list tidy with Archive</li>
+  <li>Step 10 - Download the Excel report</li>
+  <li>Step 11 - Automatic daily scans</li>
+  <li>Step 12 - Settings (timezone &amp; email)</li>
+  <li>Handy tips (Clone, keywords)</li>
+  <li>Your everyday routine</li>
+  <li>Troubleshooting</li>
+  <li>Quick reference</li>
+</ol>
+
+<h2>1. What is Tender Monitor?</h2>
+<p class="lead">Tender Monitor is a small application that runs on your own Windows
+computer and watches government <strong>e-procurement / tender websites</strong> for you.
+You tell it which websites to watch and what words you care about (for example
+<em>water, pipeline, WTP, STP</em>); it visits those sites on a schedule, finds the
+tenders, and tells you which ones are <strong>new</strong> or <strong>changed</strong> since last time.</p>
+<p>It can:</p>
+<ul>
+  <li>Monitor any number of public tender portals (NIC eProcurement portals like
+      wbtenders.gov.in are supported automatically).</li>
+  <li>Detect <strong>NEW</strong> and <strong>UPDATED</strong> tenders (e.g. a closing date extended).</li>
+  <li>Download publicly available tender documents (NIT, BOQ, corrigendum, etc.).</li>
+  <li>Score tenders by relevance to your keywords (HIGH / MEDIUM / LOW).</li>
+  <li>Produce a professional Excel report and keep a full local history.</li>
+  <li>Run automatically every day, even when the window is closed.</li>
+</ul>
+<div class="note"><strong>Everything stays on your computer.</strong> There is no website
+to sign up for and no cloud account. The app opens in your normal web browser at
+<code>http://127.0.0.1:8000</code>, which is just your own machine.</div>
+
+<h2>2. Before you begin (what you need)</h2>
+<ul>
+  <li>A computer with <strong>Windows 10 or 11</strong>.</li>
+  <li><strong>Python 3.12 or newer</strong> (a free program the app is built on).</li>
+  <li>About <strong>300 MB</strong> of free disk space.</li>
+  <li>An internet connection (to reach the tender websites you monitor).</li>
+</ul>
+<h3>Check if you already have Python</h3>
+<p>Open the Start menu, type <code>cmd</code>, open <strong>Command Prompt</strong>, type this and press Enter:</p>
+<div class="cmd">python --version</div>
+<p>If it shows <code>Python 3.12</code> (or higher), you are ready. If it says Python is
+not found, install it first:</p>
+<ol class="steps">
+  <li>Go to <strong>https://www.python.org/downloads/</strong> and download the latest Windows installer.</li>
+  <li>Run the installer and - very important - tick <strong>"Add Python to PATH"</strong> at the bottom of the first screen.</li>
+  <li>Click <strong>Install Now</strong> and wait for it to finish.</li>
+</ol>
+<div class="warn"><strong>Don't skip "Add Python to PATH".</strong> If you forget it, the
+install step below will not be able to find Python. You can re-run the Python
+installer and tick it if needed.</div>
+
+<h2>3. Step 1 - Install the application</h2>
+<p>You should have a folder for the app, for example <code>D:\Tender Hunt</code>, containing
+files such as <code>install.bat</code> and <code>start.bat</code>.</p>
+<ol class="steps">
+  <li>Open that folder in File Explorer.</li>
+  <li>Double-click <strong>install.bat</strong>.</li>
+  <li>A black window opens and sets everything up automatically. It will:
+    create a private workspace, download the parts it needs, install a built-in
+    browser it uses to read websites, and prepare the database.</li>
+  <li>This takes a few minutes the first time. When you see <em>"Installation complete"</em>,
+    press a key to close the window.</li>
+</ol>
+<div class="note">You only ever run <strong>install.bat</strong> <strong>once</strong>. After that you start
+the app with <strong>start.bat</strong>.</div>
+
+<h2>4. Step 2 - Start the application</h2>
+<ol class="steps">
+  <li>Double-click <strong>start.bat</strong> in the same folder.</li>
+  <li>A black window opens (leave it open - that is the app running) and your web
+    browser opens automatically at <strong>http://127.0.0.1:8000</strong>.</li>
+  <li>You should see the <strong>Dashboard</strong> shown below.</li>
+</ol>
+<img class="screenshot" src="img/dashboard.png" alt="Dashboard">
+<p class="cap">The Dashboard - your home screen. This is what opens when you start the app.</p>
+<div class="tip"><strong>To stop the app later:</strong> close the black window, or double-click
+<strong>stop.bat</strong>. To use the app again another day, just double-click <strong>start.bat</strong>.</div>
+
+<h2>5. Step 3 - Understand the Dashboard</h2>
+<p>The Dashboard gives you the big picture at a glance:</p>
+<ul>
+  <li><strong>Configured Portals / Scanned OK / Need Attention</strong> - how many websites you
+      watch and their health.</li>
+  <li><strong>Total Tenders</strong>, <strong>New (latest)</strong>, <strong>Updated (latest)</strong>, <strong>Documents</strong> -
+      what the app has found.</li>
+  <li><strong>Last Successful Scan</strong> and <strong>Next Scheduled Scan</strong>.</li>
+  <li><strong>Recent Scans</strong>, <strong>Recent Errors</strong> and <strong>Notifications</strong> panels.</li>
+</ul>
+<p>The buttons at the top - <strong>Add Portal</strong>, <strong>Run All Now</strong>, <strong>View New Tenders</strong>,
+<strong>Download Excel</strong>, <strong>View Scan History</strong>, <strong>Settings</strong> - are shortcuts to everything
+you need. The blue bar at the very top (Dashboard, Portals, Tenders, Archive,
+Scan History, Settings) is the main menu, always available.</p>
+
+<h2>6. Step 4 - Add your first tender portal</h2>
+<p>Click <strong>Add Portal</strong> (top of the Dashboard). Fill in the form and click
+<strong>Save Portal</strong>. Below is an example set up to watch water-sector tenders.</p>
+<img class="screenshot" src="img/add_portal.png" alt="Add Portal form">
+<p class="cap">The Add Portal form, filled in with an example.</p>
+<table>
+  <tr><th>Field</th><th>What to put</th></tr>
+  <tr><td>Portal Name</td><td>Any label, e.g. <em>West Bengal eProcurement</em></td></tr>
+  <tr><td>Website URL</td><td>The site address, e.g. <code>https://wbtenders.gov.in/nicgep/app</code></td></tr>
+  <tr><td>Monitoring</td><td>Tick <strong>Enabled</strong></td></tr>
+  <tr><td>Schedule</td><td><em>Daily</em> (recommended) or <em>Manual</em></td></tr>
+  <tr><td>Run Time</td><td>When the daily scan runs, e.g. <code>08:00</code></td></tr>
+  <tr><td>Keywords</td><td>Words you care about, e.g. <code>water, pipeline, WTP, STP, JJM</code></td></tr>
+  <tr><td>Negative Keywords</td><td>Words to exclude, e.g. <code>vehicle, canteen</code></td></tr>
+  <tr><td>Keyword Mode</td><td><em>Match ANY keyword</em> (broad) or <em>ALL</em> (strict)</td></tr>
+  <tr><td>Location / Min / Max Value</td><td>Optional filters</td></tr>
+  <tr><td>Download Documents</td><td><em>Yes</em> to save PDFs/BOQ for matching tenders</td></tr>
+  <tr><td>Organisations to scan</td><td>For NIC portals: how many departments to cover (default 60)</td></tr>
+  <tr><td>Store only matching tenders</td><td>Tick to keep only tenders that match your keywords</td></tr>
+  <tr><td>Browser Mode</td><td>Leave as <em>Headless</em></td></tr>
+</table>
+<div class="note"><strong>Good news for Indian government portals:</strong> most state tender sites
+(West Bengal, Goa, Odisha, and others ending in <code>/nicgep/app</code>) are recognised
+<strong>automatically</strong>. Just paste the site's main address - the app knows how to read
+their "Tenders by Organisation" pages.</div>
+
+<h2>7. Step 5 - Test the portal</h2>
+<p>Before saving, click <strong>Test Portal</strong>. The app opens the website with its built-in
+browser and checks whether it can read tenders from it. After a few seconds you
+get a result like this:</p>
+<img class="screenshot" src="img/test_result.png" alt="Portal test result">
+<p class="cap">A successful Test Portal result for a NIC eProcurement site.</p>
+<p>Look at <strong>Automation Readiness</strong> at the top:</p>
+<table>
+  <tr><th>Result</th><th>Meaning</th></tr>
+  <tr><td>SUPPORTED / GOOD</td><td>The app can read this site. Save and scan it.</td></tr>
+  <tr><td>SUPPORTED (NIC eProcurement)</td><td>Recognised government portal - it will scan via "Tenders by Organisation".</td></tr>
+  <tr><td>PARTIALLY SUPPORTED</td><td>Some fields may be missing, but it will still work.</td></tr>
+  <tr><td>CAPTCHA / LOGIN REQUIRED</td><td>The site is protected; the app will not (and should not) bypass it.</td></tr>
+  <tr><td>SITE UNAVAILABLE / BLOCKED</td><td>The site could not be reached right now - try again later.</td></tr>
+</table>
+<div class="note">For NIC portals the individual date/ID rows are read from the real
+"Tenders by Organisation" pages during the test, so you will see <strong>Published date</strong>,
+<strong>Closing date</strong> and <strong>Organisation</strong> marked PASS. Then click <strong>Save Portal</strong>.</div>
+
+<h2>8. Step 6 - Run your first scan</h2>
+<p>You can scan any time - you do not have to wait for the schedule.</p>
+<ul>
+  <li>From the <strong>Dashboard</strong>, click <strong>Run All Now</strong> to scan every enabled portal, or</li>
+  <li>Go to <strong>Portals</strong> and click <strong>Scan</strong> next to one portal.</li>
+</ul>
+<p>A NIC portal walks through each government department, so the first scan can take
+a few minutes. Watch progress on the <strong>Scan History</strong> page.</p>
+<img class="screenshot" src="img/scans.png" alt="Scan History">
+<p class="cap">Scan History - every scan with how many tenders were found, new, updated and downloaded.</p>
+<div class="warn"><strong>The very first scan of a portal is a "baseline".</strong> It records everything
+that is already there but does not flag it all as NEW (that would be thousands of
+old tenders). From the <strong>second</strong> scan onward, only genuinely new or changed tenders
+are flagged NEW / UPDATED.</div>
+<div class="tip"><strong>Tidy tip:</strong> right after your first baseline scan, use
+<strong>Archive reviewed</strong> (see Step 9) to clear the old pile so that, going forward, your
+Tenders list only fills with genuinely new tenders.</div>
+
+<h2>9. Step 7 - View and filter tenders</h2>
+<p>Click <strong>Tenders</strong> in the top menu. This shows the tenders the app has found,
+with their Published and Closing dates, value, a <strong>relevance</strong> badge and a status
+(new / updated / existing).</p>
+<img class="screenshot" src="img/tenders.png" alt="Tenders page">
+<p class="cap">The Tenders page. Use the filters and the quick-view buttons at the top.</p>
+<p>The two most useful buttons, at the top:</p>
+<ul>
+  <li><strong>New today</strong> - tenders the app first saw today. This is the fastest way to see
+      "what came in since yesterday".</li>
+  <li><strong>Published today</strong> - tenders whose official published date is today.</li>
+</ul>
+<p>You can also filter by portal, keyword, organisation, location, status,
+<strong>relevance</strong> and a <strong>Published date range</strong>. To focus on the best matches, set
+<strong>Relevance = HIGH</strong>.</p>
+<img class="screenshot" src="img/new_today.png" alt="New tenders filtered">
+<p class="cap">Filtering to only NEW tenders - your daily short-list.</p>
+
+<h2>10. Step 8 - Open a tender's details</h2>
+<p>Click any tender's title to see everything about it: full metadata, the source
+link, downloaded <strong>documents</strong>, and its <strong>change history</strong> (for example
+"CLOSING DATE EXTENDED" with the old and new dates).</p>
+<img class="screenshot" src="img/tender_detail.png" alt="Tender detail page">
+<p class="cap">A tender's detail page, including documents and change history.</p>
+
+<h2>11. Step 9 - Keep the list tidy with Archive</h2>
+<p>Over time the Tenders list grows. To keep it focused on what is current, move old
+or already-reviewed tenders to the <strong>Archive</strong> (nothing is deleted - archived
+tenders are just hidden from the main list and can be restored any time).</p>
+<p>On the <strong>Tenders</strong> page, three buttons help:</p>
+<table>
+  <tr><th>Button</th><th>What it does</th></tr>
+  <tr><td>Archive reviewed</td><td>Archives all <em>unchanged</em> tenders, keeps NEW and UPDATED. Best for daily clean-up.</td></tr>
+  <tr><td>Archive all</td><td>Moves everything in the active list to the Archive (a full clear).</td></tr>
+  <tr><td>Archive (per row)</td><td>Archive one tender using the small button on its row.</td></tr>
+</table>
+<p>Open the <strong>Archive</strong> page from the top menu to search old tenders and
+<strong>Restore</strong> any of them.</p>
+<img class="screenshot" src="img/archive.png" alt="Archive page">
+<p class="cap">The Archive page - old tenders, searchable, with Restore.</p>
+<div class="note"><strong>Updates are never lost:</strong> if a tender you archived later changes
+(a corrigendum or new closing date), the next scan automatically brings it back
+into the active list so you notice it.</div>
+
+<h2>12. Step 10 - Download the Excel report</h2>
+<p>Click <strong>Download Excel</strong> (on the Dashboard or the Tenders page) to get a full
+report file named like <code>Tender_Report_2026-09-14.xlsx</code>. It contains ready-to-use
+sheets:</p>
+<ul>
+  <li>NEW TENDERS, UPDATED TENDERS, ALL ACTIVE TENDERS</li>
+  <li>CLOSING WITHIN 7 DAYS, CLOSING WITHIN 30 DAYS</li>
+  <li>DOCUMENT DOWNLOADS, PORTAL STATUS, SCAN SUMMARY, ERRORS</li>
+</ul>
+<p>Headers are frozen, filters are on, and links to the tender pages and documents
+are clickable. Tip: in the NEW TENDERS sheet you can filter the <strong>Published</strong> column
+to today's date to see only today's fresh tenders.</p>
+
+<h2>13. Step 11 - Automatic daily scans</h2>
+<p>There are two ways to run scans automatically:</p>
+<h3>a) While the app is open</h3>
+<p>If a portal's Schedule is <strong>Daily</strong> (or Weekly), the app scans it at the set time
+as long as the app window is running. The Dashboard shows the <strong>Next Scheduled Scan</strong>.</p>
+<h3>b) Even when the app is closed (recommended)</h3>
+<p>Use Windows Task Scheduler so scans run in the background:</p>
+<ol class="steps">
+  <li>Double-click <strong>setup_scheduler.bat</strong> in the app folder.</li>
+  <li>Type the time you want (e.g. <code>07:00</code>) and press Enter.</li>
+  <li>It creates a daily Windows task named <strong>TenderMonitorDaily</strong> that scans all your
+      portals - the app window does not need to be open.</li>
+</ol>
+<div class="note">If Windows asks for administrator permission, right-click
+<strong>setup_scheduler.bat</strong> and choose <em>Run as administrator</em>.</div>
+
+<h2>14. Step 12 - Settings (timezone &amp; email)</h2>
+<p>Open <strong>Settings</strong> from the top menu.</p>
+<img class="screenshot" src="img/settings.png" alt="Settings page">
+<p class="cap">Settings - timezone and optional email notifications.</p>
+<ul>
+  <li><strong>Timezone</strong> - leave as <code>Asia/Kolkata</code> unless you are elsewhere. This controls
+      what "today" means and the times shown.</li>
+  <li><strong>Email notifications (optional)</strong> - if you want a daily summary emailed to you,
+      fill in your email provider's SMTP details, tick <strong>Enable notifications</strong>, and
+      choose when to send (only if new tenders, only high relevance, etc.). Leave
+      blank if you do not want email - everything works without it.</li>
+</ul>
+<div class="note">Your settings and passwords are stored only on your computer and are
+never shown in the logs.</div>
+
+<h2>15. Handy tips</h2>
+<h3>Clone a portal</h3>
+<p>To watch several state portals with the same keywords, set one up, then on the
+<strong>Portals</strong> page click <strong>Clone</strong>. It copies every setting into a new portal and opens
+it for editing - just change the <strong>Name</strong> and <strong>URL</strong> and Save.</p>
+<h3>Choosing good keywords</h3>
+<p>Keywords decide what counts as relevant. Use the words that appear in tender
+titles, e.g. for water works: <code>water, pipeline, WTP, STP, JJM, sewerage, water treatment</code>.
+Add <strong>Negative Keywords</strong> to remove noise, e.g. <code>vehicle, security, canteen</code>.</p>
+
+<h2>16. Your everyday routine</h2>
+<ol class="steps">
+  <li>Open the app (double-click <strong>start.bat</strong>) - or let the daily Windows task scan for you.</li>
+  <li>Go to <strong>Tenders</strong> and click <strong>New today</strong> (optionally set <strong>Relevance = HIGH</strong>).</li>
+  <li>Open any tender to read details and download its documents.</li>
+  <li>Click <strong>Download Excel</strong> to save/share the report.</li>
+  <li>Click <strong>Archive reviewed</strong> to clear what you have handled - tomorrow only new ones appear.</li>
+</ol>
+<div class="tip">That is the whole daily loop: <strong>New today &rarr; review &rarr; Excel &rarr; Archive reviewed.</strong></div>
+
+<h2>17. Troubleshooting</h2>
+<table>
+  <tr><th>Problem</th><th>What to do</th></tr>
+  <tr><td>"Python was not found" during install</td><td>Install Python 3.12+ and tick "Add Python to PATH", then run install.bat again.</td></tr>
+  <tr><td>The browser page shows <code>{"detail":"Not Found"}</code> after an update</td><td>The app needs a restart to load changes. Close the black window (or stop.bat) and run start.bat again.</td></tr>
+  <tr><td>A portal says CAPTCHA REQUIRED / LOGIN REQUIRED</td><td>That site is protected and cannot be automated. This is expected for some portals.</td></tr>
+  <tr><td>A site briefly shows an error or "503"</td><td>The website is busy or blocking automated visits. Wait a while and scan again.</td></tr>
+  <tr><td>"Archive older/reviewed" seems to do nothing</td><td>Check the green message it shows - if everything is from today, there may be nothing unchanged to archive yet. Use "Archive all" to clear fully.</td></tr>
+  <tr><td>Port 8000 already in use</td><td>Another copy is running. Close all black windows and start again, or use a different port.</td></tr>
+  <tr><td>Where are my files?</td><td>Inside the app folder: <code>data\downloads</code> (documents), <code>data\reports</code> (Excel), <code>data\logs</code> (logs).</td></tr>
+</table>
+
+<h2>18. Quick reference</h2>
+<table>
+  <tr><th>File</th><th>Use</th></tr>
+  <tr><td><code>install.bat</code></td><td>Run once to set everything up.</td></tr>
+  <tr><td><code>start.bat</code></td><td>Start the app (opens the Dashboard in your browser).</td></tr>
+  <tr><td><code>stop.bat</code></td><td>Stop the app.</td></tr>
+  <tr><td><code>run_scan.bat</code></td><td>Run one scan of all portals (used by the daily task).</td></tr>
+  <tr><td><code>setup_scheduler.bat</code></td><td>Set up automatic daily scans in Windows.</td></tr>
+</table>
+<table>
+  <tr><th>Address</th><td><code>http://127.0.0.1:8000</code> (your own computer)</td></tr>
+  <tr><th>Menu</th><td>Dashboard &middot; Portals &middot; Tenders &middot; Archive &middot; Scan History &middot; Settings</td></tr>
+  <tr><th>Daily loop</th><td>New today &rarr; review &rarr; Download Excel &rarr; Archive reviewed</td></tr>
+</table>
+<p style="margin-top:24px;color:#64748b;font-size:11px;text-align:center;">
+Tender Monitor - by Ganguly B (Shavarna) &middot; enlaceet@gmail.com &middot; WhatsApp +91-9073288770<br>
+Free and open source (MIT License). Handbook for Version 1.0.</p>
+
+</body>
+</html>

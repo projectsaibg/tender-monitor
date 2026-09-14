@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-head"><h1>About Tender Monitor</h1></div>
+<div class="grid-2">
+  <section class="panel">
+    <img src="/static/img/logo.png" alt="Tender Monitor" style="max-width:260px;display:block;margin:0 auto 12px;">
+    <table class="kv">
+      <tr><th>Application</th><td>Tender Monitor</td></tr>
+      <tr><th>Version</th><td>v{{ app_version }}</td></tr>
+      <tr><th>Made by</th><td><strong>{{ author }}</strong></td></tr>
+      <tr><th>Email</th><td><a href="mailto:{{ contact_email }}">{{ contact_email }}</a></td></tr>
+      <tr><th>WhatsApp</th><td><a href="{{ contact_whatsapp_link }}" target="_blank" rel="noopener">{{ contact_whatsapp }}</a></td></tr>
+      <tr><th>License</th><td>Open source - {{ app_license }} License</td></tr>
+      {% if repo_url %}<tr><th>Project</th><td><a href="{{ repo_url }}" target="_blank" rel="noopener">{{ repo_url }}</a></td></tr>{% endif %}
+    </table>
+    <p class="muted">Tender Monitor is free and open-source software. You may use,
+    copy, modify and share it. Feedback, bug reports and contributions are welcome -
+    please contact the author above.</p>
+  </section>
+  <section class="panel">
+    <h2>Software updates</h2>
+    <p>Your version: <strong>v{{ app_version }}</strong></p>
+    <div id="update-box">
+      {% if update and update.available %}
+        <div class="notice">Version {{ update.latest }} is available.
+          {% if update.url %}<a class="btn tiny" href="{{ update.url }}" target="_blank" rel="noopener">Download</a>{% endif %}</div>
+        {% if update.notes %}<p><strong>What is new:</strong> {{ update.notes }}</p>{% endif %}
+      {% elif update and update.configured %}
+        <p class="muted">You are up to date.</p>
+      {% else %}
+        <p class="muted">Update checking is not set up on this copy.</p>
+      {% endif %}
+    </div>
+    <button class="btn" id="check-update-btn">Check for updates</button>
+    <p class="muted" style="margin-top:12px;">The author can notify every user of a
+    new release from one place. Technical details are in
+    <code>docs/PUBLISHING_UPDATES.md</code>.</p>
+  </section>
+</div>
+{% endblock %}
+{% block scripts %}<script>
+document.getElementById("check-update-btn").addEventListener("click", async function () {
+  var box = document.getElementById("update-box"); var btn = this;
+  btn.disabled = true; btn.textContent = "Checking...";
+  try {
+    var r = await fetch("/api/check-update", { method: "POST" });
+    var d = await r.json();
+    if (d.available) {
+      box.innerHTML = "<div class=\"notice\">Version " + d.latest + " is available. " +
+        (d.url ? "<a class=\"btn tiny\" href=\"" + d.url + "\" target=\"_blank\" rel=\"noopener\">Download</a>" : "") +
+        "</div>" + (d.notes ? "<p><strong>What is new:</strong> " + d.notes + "</p>" : "");
+    } else if (d.configured) {
+      box.innerHTML = "<p class=\"muted\">You are up to date (v" + d.current + ").</p>";
+    } else {
+      box.innerHTML = "<p class=\"muted\">Update checking is not set up. " + (d.error || "") + "</p>";
+    }
+  } catch (e) { box.innerHTML = "<p class=\"err\">Could not check: " + e + "</p>"; }
+  btn.disabled = false; btn.textContent = "Check for updates";
+});
+</script>{% endblock %}

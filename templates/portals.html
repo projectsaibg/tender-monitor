@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-head">
+  <h1>Portals</h1>
+  <div class="actions"><a class="btn primary" href="/portals/new">Add Portal</a></div>
+</div>
+
+<table class="tbl">
+  <thead>
+    <tr><th>Name</th><th>URL</th><th>Enabled</th><th>Schedule</th><th>Health</th>
+        <th>Tenders</th><th>Last Scan</th><th>Next Run</th><th>Actions</th></tr>
+  </thead>
+  <tbody>
+  {% for p in portals %}
+    <tr>
+      <td><strong>{{ p.name }}</strong></td>
+      <td class="mono trunc"><a href="{{ p.url }}" target="_blank" rel="noopener">{{ p.url }}</a></td>
+      <td>{{ "Yes" if p.enabled else "No" }}</td>
+      <td>{{ p.schedule_type }}{% if p.schedule_type != "manual" %} {{ p.run_time }}{% endif %}</td>
+      <td><span class="tag {{ p.health }}">{{ p.health }}</span></td>
+      <td>{{ p.tender_count }}</td>
+      <td class="mono">{{ p.last_scan_at or "-" }}</td>
+      <td class="mono">{{ p.next_run or "-" }}</td>
+      <td class="rowactions">
+        <a class="btn tiny" href="/portals/{{ p.id }}/edit">Edit</a>
+        <form method="post" action="/portals/{{ p.id }}/clone"><button class="btn tiny">Clone</button></form>
+        <form method="post" action="/portals/{{ p.id }}/scan"><button class="btn tiny" {{ "disabled" if scan_running else "" }}>Scan</button></form>
+        <form method="post" action="/portals/{{ p.id }}/toggle"><button class="btn tiny">{{ "Disable" if p.enabled else "Enable" }}</button></form>
+        <form method="post" action="/portals/{{ p.id }}/delete" onsubmit="return confirm('Delete this portal and its tenders?')"><button class="btn tiny danger">Delete</button></form>
+      </td>
+    </tr>
+  {% else %}
+    <tr><td colspan="9" class="muted">No portals configured. Click Add Portal to begin.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

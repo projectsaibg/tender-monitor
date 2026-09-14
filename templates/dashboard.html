@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-head">
+  <h1>Dashboard</h1>
+  <div class="actions">
+    <a class="btn primary" href="/portals/new">Add Portal</a>
+    <form method="post" action="/scan/all" style="display:inline">
+      <button class="btn" type="submit" {{ "disabled" if scan_running else "" }}>Run All Now</button>
+    </form>
+    <a class="btn" href="/tenders?status=new">View New Tenders</a>
+    <a class="btn" href="/tenders?status=updated">View Updated Tenders</a>
+    <a class="btn" href="/export">Download Excel</a>
+    <a class="btn" href="/scans">View Scan History</a>
+    <a class="btn" href="/settings">Settings</a>
+  </div>
+</div>
+
+<div class="cards">
+  <div class="card"><div class="num">{{ stats.total_portals }}</div><div class="lbl">Configured Portals</div></div>
+  <div class="card ok"><div class="num">{{ stats.portals_healthy }}</div><div class="lbl">Scanned OK</div></div>
+  <div class="card warn"><div class="num">{{ stats.portals_attention }}</div><div class="lbl">Need Attention</div></div>
+  <div class="card"><div class="num">{{ stats.total_tenders }}</div><div class="lbl">Total Tenders</div></div>
+  <div class="card new"><div class="num">{{ stats.new_tenders }}</div><div class="lbl">New (latest)</div></div>
+  <div class="card upd"><div class="num">{{ stats.updated_tenders }}</div><div class="lbl">Updated (latest)</div></div>
+  <div class="card"><div class="num">{{ stats.documents_downloaded }}</div><div class="lbl">Documents</div></div>
+  <div class="card"><div class="num small">{{ stats.last_scan.finished_at if stats.last_scan else "never" }}</div><div class="lbl">Last Successful Scan</div></div>
+  <div class="card"><div class="num small">{{ next_run or "none" }}</div><div class="lbl">Next Scheduled Scan</div></div>
+</div>
+
+<div class="grid-2">
+  <section class="panel">
+    <h2>Recent Scans</h2>
+    <table class="tbl">
+      <thead><tr><th>Portal</th><th>Started</th><th>Found</th><th>New</th><th>Upd</th><th>Docs</th><th>Status</th></tr></thead>
+      <tbody>
+      {% for s in recent_scans %}
+        <tr>
+          <td><a href="/scans?scan_id={{ s.id }}">{{ s.portal_name }}</a></td>
+          <td class="mono">{{ s.started_at }}</td>
+          <td>{{ s.tenders_found }}</td><td>{{ s.new_count }}</td>
+          <td>{{ s.updated_count }}</td><td>{{ s.documents_downloaded }}</td>
+          <td><span class="tag {{ s.status }}">{{ s.status }}</span></td>
+        </tr>
+      {% else %}
+        <tr><td colspan="7" class="muted">No scans yet. Add a portal and run a scan.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Recent Errors</h2>
+    {% if stats.recent_errors %}
+    <ul class="errlist">
+      {% for e in stats.recent_errors %}
+        <li><span class="tag err">{{ e.error_type }}</span> <strong>{{ e.portal_name }}</strong>: {{ e.message }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+      <p class="muted">No recent errors.</p>
+    {% endif %}
+    <h2>Notifications</h2>
+    <ul class="notes">
+      {% for n in notifications %}
+        <li><span class="tag {{ n.level }}">{{ n.level }}</span> <strong>{{ n.title }}</strong><br><span class="muted">{{ n.message }}</span></li>
+      {% else %}
+        <li class="muted">No notifications.</li>
+      {% endfor %}
+    </ul>
+  </section>
+</div>
+{% endblock %}
