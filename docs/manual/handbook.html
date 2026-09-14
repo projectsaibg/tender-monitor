@@ -78,6 +78,7 @@
   <li>Your everyday routine</li>
   <li>Troubleshooting</li>
   <li>Quick reference</li>
+  <li>Appendix A - Running on macOS / Linux</li>
 </ol>
 
 <h2>1. What is Tender Monitor?</h2>
@@ -360,6 +361,42 @@ Add <strong>Negative Keywords</strong> to remove noise, e.g. <code>vehicle, secu
   <tr><th>Menu</th><td>Dashboard &middot; Portals &middot; Tenders &middot; Archive &middot; Scan History &middot; Settings</td></tr>
   <tr><th>Daily loop</th><td>New today &rarr; review &rarr; Download Excel &rarr; Archive reviewed</td></tr>
 </table>
+<h2>Appendix A - Running on macOS / Linux</h2>
+<p>Tender Monitor is cross-platform. On a Mac or Linux computer, use the shell
+scripts (<code>.sh</code>) instead of the Windows <code>.bat</code> files - the
+program itself is exactly the same.</p>
+<div class="note">You need <strong>Python 3.12 or newer</strong>. Check with
+<code>python3 --version</code>. Install it from python.org, or on a Mac with
+<code>brew install python@3.12</code>.</div>
+<h3>Install (one time)</h3>
+<p>Open <strong>Terminal</strong>, go to the project folder, and run:</p>
+<div class="cmd">./install.sh</div>
+<p>This creates the environment, installs everything (including the browser the
+app uses to read websites) and prepares the database. If the scripts are not
+runnable yet, run <code>chmod +x *.sh</code> once first.</p>
+<h3>Start the app</h3>
+<div class="cmd">./start.sh</div>
+<p>Then open <strong>http://127.0.0.1:8000</strong> in your browser. Stop it with
+<code>Ctrl+C</code> in the Terminal, or run <code>./stop.sh</code>.</p>
+<h3>Scan and schedule</h3>
+<p>Run a scan any time with <code>./run_scan.sh</code>. macOS and Linux have no
+Windows Task Scheduler, so set up an automatic daily scan with:</p>
+<div class="cmd">./setup_cron.sh</div>
+<p>Enter the time (for example 07:00) and it adds a daily <code>cron</code> job that
+scans your portals even when the app is closed.</p>
+<h3>Windows vs macOS / Linux commands</h3>
+<table>
+  <tr><th>Windows</th><th>macOS / Linux</th></tr>
+  <tr><td>install.bat</td><td>./install.sh</td></tr>
+  <tr><td>start.bat</td><td>./start.sh</td></tr>
+  <tr><td>stop.bat</td><td>./stop.sh</td></tr>
+  <tr><td>run_scan.bat</td><td>./run_scan.sh</td></tr>
+  <tr><td>setup_scheduler.bat</td><td>./setup_cron.sh</td></tr>
+</table>
+<div class="tip">Everything else in this handbook - the Dashboard, adding portals,
+Test Portal, scanning, tenders, the Archive, Excel reports, Settings and update
+checks - looks and works exactly the same on macOS / Linux.</div>
+
 <p style="margin-top:24px;color:#64748b;font-size:11px;text-align:center;">
 Tender Monitor - by Ganguly B (Shavarna) &middot; enlaceet@gmail.com &middot; WhatsApp +91-9073288770<br>
 Free and open source (MIT License). Handbook for Version 1.0.</p>
