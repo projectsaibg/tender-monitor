@@ -33,5 +33,37 @@
 
   <div class="form-actions"><button type="submit" class="btn primary">Save Settings</button></div>
 </form>
+
+<section class="panel">
+  <h2>Test Delivery</h2>
+  <p class="muted">Send a test email right now using the saved settings. If you just changed them, click <strong>Save Settings</strong> first.</p>
+  <p class="muted"><strong>Gmail users:</strong> the SMTP password must be a 16-character <em>App Password</em>
+    (Google Account &rarr; Security &rarr; 2-Step Verification &rarr; App passwords), not your normal account
+    password. A normal password is rejected with error 535 "Username and Password not accepted".</p>
+  <div class="form-actions">
+    <button type="button" id="testEmailBtn" class="btn">Send test email</button>
+    <span id="testEmailResult" class="muted"></span>
+  </div>
+</section>
+
 <p class="muted">Credentials are stored locally in the SQLite database and never written to logs.</p>
+
+<script>
+  (function () {
+    var btn = document.getElementById("testEmailBtn");
+    var out = document.getElementById("testEmailResult");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      btn.disabled = true;
+      out.textContent = "Sending...";
+      fetch("/api/test-email", { method: "POST" })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          out.textContent = d.sent ? "Sent successfully. Check the inbox." : ("Not sent: " + (d.reason || "unknown"));
+        })
+        .catch(function (e) { out.textContent = "Error: " + e; })
+        .then(function () { btn.disabled = false; });
+    });
+  })();
+</script>
 {% endblock %}

@@ -34,23 +34,17 @@ def cmd_server(args):
 
 def cmd_scan(args):
     from services import scan_service
-    from reports import excel_exporter
-    from services import notification_service
-    log = get_logger("scanner")
-    summary = scan_service.scan_all(trigger="cli")
+    summary = scan_service.scan_all_notify(trigger="cli")
     print("Scan complete: %d portal(s), %d successful, %d new, %d updated, %d documents"
           % (summary["portals"], summary["successful"], summary["new"],
              summary["updated"], summary["documents"]))
-    try:
-        path = excel_exporter.generate_report()
-        print("Excel report: %s" % path)
-        result = notification_service.maybe_send_summary(summary, excel_path=path)
-        if result.get("sent"):
-            print("Summary email sent.")
-        else:
-            print("Summary email not sent (%s)." % result.get("reason"))
-    except Exception as exc:
-        log.error("Post-scan report/email failed: %s", exc)
+    if summary.get("excel_path"):
+        print("Excel report: %s" % summary["excel_path"])
+    result = summary.get("email_result") or {"sent": False, "reason": "not attempted"}
+    if result.get("sent"):
+        print("Summary email sent.")
+    else:
+        print("Summary email not sent (%s)." % result.get("reason"))
     return 0 if summary["successful"] == summary["portals"] else 1
 
 

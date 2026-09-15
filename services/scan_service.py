@@ -273,7 +273,7 @@ def _notify_scan(portal, new_count, updated_count, doc_count, baseline_mode):
             "%d new, %d updated, %d documents downloaded." % (new_count, updated_count, doc_count))
 
 
-def scan_all(trigger="manual", fetch_fn=None, allow_private=None):
+def scan_all(trigger="manual", fetch_fn=None, allow_private=None, notify=False):
     portals = ts.list_portals(enabled_only=True)
     results = []
     for portal in portals:
@@ -295,4 +295,33 @@ def scan_all(trigger="manual", fetch_fn=None, allow_private=None):
         "documents": sum(r.get("documents", 0) for r in results),
         "results": results,
     }
+    if notify:
+        _finalize_notify(summary)
     return summary
+
+
+def scan_all_notify(trigger="manual", fetch_fn=None, allow_private=None):
+    """Scan all portals, then generate the report and send the summary email.
+
+    Used by the dashboard "Scan all now" button and the CLI ``--scan`` so every
+    full run reaches the same report/email path as Windows Task Scheduler.
+    """
+    return scan_all(trigger, fetch_fn, allow_private, notify=True)
+
+
+def _finalize_notify(summary):
+    """Generate the Excel report and send the summary email (best-effort)."""
+    from reports import excel_exporter
+    from services import notification_service
+    excel_path = None
+    try:
+        excel_path = excel_exporter.generate_report()
+    except Exception as exc:
+        log.error("Post-scan report generation failed: %s", exc)
+    summary["excel_path"] = excel_path
+    try:
+        summary["email_result"] = notification_service.maybe_send_summary(
+            summary, excel_path=excel_path)
+    except Exception as exc:
+        log.error("Post-scan notification failed: %s", exc)
+        summary["email_result"] = {"sent": False, "reason": str(exc)}

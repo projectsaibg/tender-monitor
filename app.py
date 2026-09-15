@@ -175,7 +175,7 @@ def create_app():
 
     @app.post("/scan/all")
     def scan_all_now():
-        _start_background(scan_service.scan_all, "manual")
+        _start_background(scan_service.scan_all_notify, "manual")
         return RedirectResponse("/", status_code=303)
 
     # --------------------------------------------------------------------- #
@@ -361,6 +361,18 @@ def create_app():
     @app.post("/api/check-update")
     def api_check_update():
         return JSONResponse(_jsonable(update_service.check_for_update(force=True)))
+
+    @app.post("/api/test-email")
+    def api_test_email():
+        """Send a test email using the saved settings; report the exact result."""
+        from services import notification_service
+        from utils.dates import now_tz
+        when = now_tz(ts.get_timezone_name()).strftime("%d %B %Y %H:%M")
+        result = notification_service.send_email(
+            "Tender Monitor: test email",
+            "This is a test email from Tender Monitor sent at %s.\n\n"
+            "If you received this, SMTP delivery is working correctly." % when)
+        return JSONResponse(result)
 
     return app
 
